@@ -1,0 +1,23 @@
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="calculator">
+        <div class="c_group">
+            <input type="number" class="input" id="num1"/>
+            <select class="signs" id="operator">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="/">/</option>
+                <option value="*">*</option>
+                <option value="^">^</option>
+            </select>
+            <input type="number" class="input" id="num2"/>
+        </div>
+        <button onclick="calculate()" type="button">подсчитать</button>
+        <div class="result" id="results"></div>
+    </div>
+</body>
+</html>
