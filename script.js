@@ -1,61 +1,43 @@
 function calculate() {
-    try {
-        const num1 = parseFloat(document.getElementById("num1").value);
-        const num2 = parseFloat(document.getElementById("num2").value);
-        const operator = document.getElementById("operator").value;
-        const resultsBox = document.getElementById("results");
+    
+    const num1 = parseFloat(document.getElementById('num1').value);
+    const num2 = parseFloat(document.getElementById('num2').value);
+    const operator = document.getElementById('operator').value;
+    const resultElement = document.getElementById('results');
 
-        if (isNaN(num1) || isNaN(num2)) {
-            resultsBox.textContent = ""; 
-            throw new Error("Ошибка! Введите корректные числа.");
-        }
-
-        let result;
-        switch (operator) {
-            case "+":
-                result = num1 + num2;
-                break;
-            case "-":
-                result = num1 - num2;
-                break;
-            case "*":
-                result = num1 * num2;
-                break;
-            case "/":
-                if (Math.abs(num2) < Number.EPSILON) {
-                    resultsBox.textContent = "Ошибка! Деление на ноль.";
-                    return;
-                }
-                result = num1 / num2;
-                break;
-            case "^":
-                result = Math.pow(num1, num2);
-                break;
-            default:
-                resultsBox.textContent = "Ошибка! Неизвестная операция.";
-                return;
-        }
-
-        addResult(resultsBox, `${num1} ${operator} ${num2} = ${result}`);
-
-        if (resultsBox.children.length > 3) {
-            resultsBox.removeChild(resultsBox.firstElementChild); 
-        }
-    } catch (error) {
-        alert(error.message);
+    if (operator === '/' && Math.abs(num2) < Number.EPSILON) {
+        alert("Ошибка: деление на ноль!");
+        return;
     }
+
+    let result;
+    switch (operator) {
+        case '+': result = num1 + num2; break;
+        case '-': result = num1 - num2; break;
+        case '*': result = num1 * num2; break;
+        case '/': result = num1 / num2; break;
+        case '^': result = Math.pow(num1, num2); break;
+        default: result = "Неизвестная операция";
+    }
+
+    const example = `${num1} ${operator} ${num2} = ${result}`;
+
+    updateResults(example);
 }
 
-function addResult(resultsBox, resultText) {
-    const previousResults = resultsBox.querySelectorAll(".new-result");
-    previousResults.forEach(result => {
-        result.classList.remove("new-result");
-        result.classList.add("old-result");
-    });
+function updateResults(newExample) {
+    const resultElement = document.getElementById('results');
+    let results = resultElement.innerHTML.split('<br>');
 
-    const newResult = document.createElement("div");
-    newResult.classList.add("new-result");
-    newResult.textContent = resultText;
+    results.push(`<span class="new-result">${newExample}</span>`);
 
-    resultsBox.append(newResult);
+    if (results.length > 3) {
+        results.shift(); 
+    }
+
+    for (let i = 0; i < results.length - 1; i++) {
+        results[i] = results[i].replace('new-result', 'old-result');
+    }
+
+    resultElement.innerHTML = results.join('<br>');
 }
